@@ -1,0 +1,194 @@
+	
+----- 영화(TABLE MOVIE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	  
+	   1. 테이블 생성
+		CREATE TABLE MOVIE (
+			MOVIE_NO    NUMBER(8)   NOT NULL, -- 영화번호
+			MOVIE_TITLE VARCHAR(20) NOT NULL, -- 영화제목
+			OPENDATE    DATE        NOT NULL, -- 개봉일
+			RUNNINGTIME DATE        NOT NULL, -- 영화시간
+			TRAIRER     CLOB        NULL,     -- 예고편
+			STORY       CLOB        NOT NULL, -- 스토리
+			DIRECTOR    VARCHAR(50) NOT NULL, -- 감독
+			ACTOR       VARCHAR(50) NOT NULL, -- 배우
+			POSTER_IMG  VARCHAR(50) NULL,     -- 포스터이미지
+			STILL_IMG   CLOB        NULL,     -- 스틸컷
+			REVIEW_NO   VARCHAR(20) NOT NULL  -- 리뷰번호
+		);
+		
+		2. 제약조건 
+		ALTER TABLE MOVIE
+			ADD
+				CONSTRAINT PK_MOVIE -- 영화 기본키
+				PRIMARY KEY (
+					MOVIE_NO -- 영화번호
+				);
+		
+		3.시퀀스 생성
+		CREATE SEQUENCE MOVIE_SEQ;
+		
+		4.내용 삽입
+		
+		INSERT INTO MOVIE VALUES(
+		MOVIE_SEQ.NEXTVAL,'어밴져스: 엔드게임','2019.04.24',
+		181,'<iframe width="1131" height="400" src="https://www.youtube.com/embed/xUDhdCsLkjU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+		'인피니트 워 이후 절반만 살아남은 지구<br>마지막 희망이 된 어벤져스<br>먼저 떠난 그들을 위해 모든 것을 걸었다!<br><br><br>위대한 어벤져스<br>운명을 바꿀 최후의 전쟁이 펼쳐진다!',
+		'안소니 루소, 조 루소','로버트 다우니 주니어, 크리스 에반스, 크리스 헴스워스, 마크 러팔로, 스칼렛 요한슨 등',
+		'poster_AvengersEndgame.jpg',
+		'still_AvengersEndgame1.jpg,still_AvengersEndgame2.jpg,still_AvengersEndgame3.jpg,still_AvengersEndgame4.jpg,still_AvengersEndgame5.jpg,still_AvengersEndgame6.jpg',1);
+
+
+----상영일정(TABLE SCHEDULE)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+		1.테이블 생성
+			CREATE TABLE SCHEDULE (
+				MOVIE_NO      NUMBER(8)   NOT NULL, -- 영화번호
+				SCHEDULE_DATE DATE        NOT NULL, -- 상영일자
+				SCHEDULE_TIME DATE        NOT NULL, -- 상영시간
+				CATEGORY      VARCHAR(20) NOT NULL, -- 분류
+				CHARGE        NUMBER(16)  NOT NULL, -- 요금
+				SCREEN_NO     NUMBER(10)  NOT NULL  -- 상영관번호
+			);
+
+		2.제약조건
+			2-1) 기본제약조건
+			
+			ALTER TABLE SCHEDULE
+				ADD
+					CONSTRAINT PK_SCHEDULE -- 상영일정 기본키
+					PRIMARY KEY (
+						MOVIE_NO,  -- 영화번호
+						SCREEN_NO  -- 상영관번호
+					);
+					
+			2-2)외래키 등
+			
+				ALTER TABLE SCHEDULE
+					ADD
+						CONSTRAINT FK_MOVIE_TO_SCHEDULE -- 영화 -> 상영일정
+						FOREIGN KEY (
+							MOVIE_NO -- 영화번호
+						)
+						REFERENCES MOVIE ( -- 영화
+							MOVIE_NO -- 영화번호
+						)
+						ON DELETE NO ACTION
+						ON UPDATE NO ACTION;
+	
+				
+				ALTER TABLE SCHEDULE
+					ADD
+						CONSTRAINT FK_SCREEN_TO_SCHEDULE -- 상영관정보 -> 상영일정
+						FOREIGN KEY (
+							SCREEN_NO -- 상영관번호
+						)
+						REFERENCES SCREEN ( -- 상영관정보
+							SCREEN_NO -- 상영관번호
+						)
+						ON DELETE NO ACTION
+						ON UPDATE NO ACTION;
+
+
+
+---- 관람등급(TABLE RATING)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		1.테이블 생성
+			CREATE TABLE RATING (
+				RATING_NO NUMBER(8)   NOT NULL, -- 관람등급번호
+				MOVIE_NO  NUMBER(8)   NOT NULL, -- 영화번호
+				RATING    VARCHAR(10) NOT NULL  -- 관람등급
+			);
+
+		2.제약조건
+			2-1) 기본제약
+			
+			ALTER TABLE RATING
+				ADD
+					CONSTRAINT PK_RATING -- 관람등급 기본키
+					PRIMARY KEY (
+						RATING_NO, -- 관람등급번호
+						MOVIE_NO   -- 영화번호
+					);
+					
+			2-2) 외래키 등
+			
+			ALTER TABLE RATING
+				ADD
+					CONSTRAINT FK_MOVIE_TO_RATING -- 영화 -> 관람등급
+					FOREIGN KEY (
+						MOVIE_NO -- 영화번호
+					)
+					REFERENCES MOVIE ( -- 영화
+						MOVIE_NO -- 영화번호
+					)
+					ON DELETE NO ACTION
+					ON UPDATE NO ACTION;				
+-- 극장정보(TABLE THEATER)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	1.테이블 생성
+		CREATE TABLE THEATER (
+			THEATER_NO   NUMBER(10)  NOT NULL, -- 극장번호
+			THEATER_NAME VARCHAR2(20) NOT NULL, -- 극장지점
+			THEATER_LOC  VARCHAR2(20) NOT NULL, -- 극장지역분류
+		    THEATER_ADDRESS VARCHAR2(100) NOT NULL,--극장주소
+			THEATER_MAP  VARCHAR2(15)  NOT NULL, -- 극장지도코드
+			THEATER_TEL  VARCHAR2(20) NOT NULL  -- 극장번화번호
+		);
+
+
+	2.제약 조건
+	
+		2-1)기본제약조건
+		ALTER TABLE THEATER
+			ADD
+				CONSTRAINT PK_THEATER -- 극장정보 기본키
+				PRIMARY KEY (
+					THEATER_NO -- 극장번호
+				);
+	
+	
+	3.내용 삽입
+		INSERT INTO THEATER VALUES(
+		1,'강남','서울','서울특별시 서초구 서초대로77길 3 아라타워 8층 무비박스 강남지점','1590535728078','02)215-1588');
+		
+		INSERT INTO THEATER VALUES(
+		2,'강동','서울','서울특별시 강동구 성내로 48 무비박스 강동지점','1590535848167','02)216-1588');	
+		
+		INSERT INTO THEATER VALUES(
+		3,'동대문','서울','서울특별시  중구 장충단로 247 굿모닝시티9층 무비박스 동대문지점','1590536948810','02)217-1588');	
+		
+		INSERT INTO THEATER VALUES(
+		4,'홍대','서울','서울특별시  마포구 동교동 양화로 147 , 7-12층 무비박스 홍대지점','1590537311365','02)217-1588');	
+		
+		
+---- 상영관정보(TABLE SCREEN)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	1.테이블 생성
+		CREATE TABLE SCREEN (
+			SCREEN_NO   NUMBER(10)  NOT NULL, -- 상영관번호
+			SCREEN_NAME VARCHAR(20) NULL,     -- 상영관명
+			SEAT_AMOUNT NUMBER(10)  NULL      -- 좌석수
+		);
+
+	2. 제약조건
+		ALTER TABLE SCREEN
+			ADD
+				CONSTRAINT PK_SCREEN -- 상영관정보 기본키
+				PRIMARY KEY (
+					SCREEN_NO -- 상영관번호
+				);
+
+       
+----회원(MEMBERINFO)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	1.테이블 생성
+	CREATE TABLE MEMBERINFO(
+	ID VARCHAR2(20) CONSTRAINTS MEMBERINFO_ID_PK PRIMARY KEY,
+	NAME VARCHAR2(10) CONSTRAINTS MEMBERINFO_NAME_NN NOT NULL,
+	PASSWORD VARCHAR2(30) CONSTRAINTS MEMBERINFO_PASSWORD_NN NOT NULL,
+	BIRTH DATE CONSTRAINTS MEMBERINFO_BIRTH_NN NOT NULL,
+	TEL VARCHAR2(15) CONSTRAINTS MEMBERINFO_TEL_NN NOT NULL,
+	EMAIL VARCHAR2(30)
+	);
+
+

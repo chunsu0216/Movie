@@ -1,259 +1,266 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Insertvalue here</title>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style type="text/css">
-	div button{
-		position: absolute;
-		text-align: center;
-	}
-	
-	button.people{
-		position: absolute;
-		top: 20px;
-		width: 30px;
-	}
-	
-	 button#seat{
-		width: 30px;
-	}
-	div#srow button{
-		left: 550px; 
-		width: 20px; 
-		border:1px solid #ccc; 
-		background: #FFFFFF;
-		text-align: center;
-		
-	}
+   div#select {
+      position: absolute;
+      text-align: center;
+   }
+   div button{
+      position: absolute;
+      text-align: center;
+   }
+   
+   button.people{
+      position: absolute;
+      top: 20px;
+      width: 30px;
+   }
+   
+    button#seat{
+      width: 30px;
+   }
+   div#srow button{
+      left: 550px; 
+      width: 20px; 
+      border:1px solid #ccc; 
+      background: #FFFFFF;
+      text-align: center;
+      
+   }
 </style>
+
 <script type="text/javascript">
+<%-- var seat='<%=seat%>' --%>
 
 $(function(){
-	//Á¦¾àÁ¶°Ç
-	
-	var clickCount=0;//Å¬¸¯ÇÑ ÁÂ¼® ±â¾ï
-	var array=new Array();
-	var state=false;
-	
-	 $("button#seat").each(function(index,dom){
-		 var cnt = 0;
-			$(dom).click(function(){
-				
-			//Á¦¾àÁ¶°Ç : ÀÎ¿ø ¼ö¸¦ ¼±ÅÃÇÏÁö ¾Ê°í ÁÂ¼®À» ¼±ÅÃÇßÀ»¶§ alert
-		 	if(!state ){
-					alert('°ü¶÷ÇÏ½Ç ÀÎ¿øÀ» ¸ÕÀú ¼±ÅÃÇØÁÖ¼¼¿ä.');
-				} 
-			//¹öÆ°À» Å¬¸¯ or ÇØÁ¦ÇßÀ» ¶§ ÀÌº¥Æ® 
-				cnt++;
-				if(cnt%2 == 0){
-					$(this).css("background-color","");
-					clickCount--;
-					array.splice(array.indexOf($(this).attr("title")), 1);
-					console.log(array);
-				}else if(cnt%2!=0 && cnt!=0){
-					$(this).css("background-color","orange");
-					clickCount++;
-					array.push($(this).attr("title"));
-				}
-			});
-		 
-	 });//button.seat
-	  
-	 //reset¹öÆ°À» Å¬¸¯ÇßÀ» ¶§ ÀÌº¥Æ®
-	  $("button#reset").click(function(){
-			$("button.people").prop("disabled",false);
-			$("button.people").css("background","");
-			$("button#seat").css("background","");
-			clickCount=0;
-			state=false;
-			$("button#seat").removeClass("selected");
-			$("button#seat").prop("disabled",false);
-			
-		});
-	 
-	 
-		$("button.people").each(function(index,dom){
-			$(dom).click(function(){
-				state=true;
-				$(this).css("background-color","red")
-				$("button.people").prop("disabled",true);
-				
-				switch ($(this).val()) {
-				case "1":
-						$("button#seat").click(function(){
-							if(clickCount==1){
-								$("button#seat").prop("disabled",true);
-								//alert(clickCount);
-								setTimeout(function(){ alert("ÁÂ¼® ¼±ÅÃÀÌ ¿Ï·áµÆ½À´Ï´Ù."); }, 500);
-							}  
-						});
-					break;
-				case "2":
-					$("button#seat").click(function(){
-						if(clickCount==2){
-							$("button#seat").prop("disabled",true);
-							//alert(clickCount);
-							setTimeout(function(){ alert("ÁÂ¼® ¼±ÅÃÀÌ ¿Ï·áµÆ½À´Ï´Ù."); }, 500);
-						}  
-					});
-					break;
-				case "3":
-					$("button#seat").click(function(){
-						if(clickCount==3){
-							$("button#seat").prop("disabled",true);
-							//alert(clickCount);
-							setTimeout(function(){ alert("ÁÂ¼® ¼±ÅÃÀÌ ¿Ï·áµÆ½À´Ï´Ù."); }, 500);
-						}  
-					});
-					break;
-				case "4":
-					$("button#seat").click(function(){
-						if(clickCount==4){
-							$("button#seat").prop("disabled",true);
-							//alert(clickCount);
-							setTimeout(function(){ alert("ÁÂ¼® ¼±ÅÃÀÌ ¿Ï·áµÆ½À´Ï´Ù."); }, 500);
-						}  
-					});
-					break;
-				case "5":
-					$("button#seat").click(function(){
-						if(clickCount==5){
-							$("button#seat").prop("disabled",true);
-							alert(clickCount);
-							setTimeout(function(){ alert("ÁÂ¼® ¼±ÅÃÀÌ ¿Ï·áµÆ½À´Ï´Ù."); }, 500);
-						}  
-					});
-					break;
+   //ì œì•½ì¡°ê±´
+   //$("input#seat").val()
+   //ì˜ˆì•½ì¢Œì„ ë³´ì—¬ì£¼ê¸°
+    $("input[type='hidden']").each(function(index,dom){
+      //alert($(dom).val());
+       $("button#seat").each(function(i,d){
+         if($(d).attr("title")==$(dom).val()){
+            $(this).attr('disabled', true);
+            $(this).css("background-color","red")
+         }
+      }); 
+      
+      
+   }); 
+    /* $("button#seat").click(function(i,d){
+      alert($(d).attr("title"));
+    }); */
+   var clickCount=0;//í´ë¦­í•œ ì¢Œì„ ê¸°ì–µ
+   var array=new Array();
+   var state=false;
+   var scr;
+   var stime;
+    $("button#seat").each(function(index,dom){
+       var cnt = 0;
+         $(dom).click(function(){
+            
+         //ì œì•½ì¡°ê±´ : ì¸ì› ìˆ˜ë¥¼ ì„ íƒí•˜ì§€ ì•Šê³  ì¢Œì„ì„ ì„ íƒí–ˆì„ë•Œ alert
+          if(!state ){
+               alert('ê´€ëŒí•˜ì‹¤ ì¸ì›ì„ ë¨¼ì € ì„ íƒí•´ì£¼ì„¸ìš”.');
+            } 
+         //ë²„íŠ¼ì„ í´ë¦­ or í•´ì œí–ˆì„ ë•Œ ì´ë²¤íŠ¸ 
+            cnt++;
+            if(cnt%2 == 0){
+               $(this).css("background-color","");
+               clickCount--;
+               array.splice(array.indexOf($(this).attr("title")),1);
+               console.log(array);
+            }else if(cnt%2!=0 && cnt!=0){
+               $(this).css("background-color","red");
+               clickCount++;
+               array.push($(this).attr("title"));
+            }
+         });
+       
+    });//button.seat
+     //ì¡°íšŒë²„íŠ¼
+      $("button.searh").click(function(){
+         scr=$("select#sc").val();
+         stime=$("select#time").val()
+          if(scr!='ìƒì˜ê´€ ì„ íƒ' && stime!='ìƒì˜ì‹œê°„ ì„ íƒ'){
+            alert(scr+":"+stime);
+            document.location.href='selectMovieSc.jsp?scr='+scr+'&stime='+stime;
+         }
+         else{
+            alert("ìƒì˜ê´€ê³¼ ìƒì˜ì‹œê°„ì„ ì„ íƒí•˜ì„¸ìš”");
+         } 
+       /*  $.ajax({
+           url:'selectMovieSc.jsp',
+           dataType:'json',
+           type:'post',
+           data:{scr:scr,stime:stime},
+           success:function(){
+              alert('ss')
+           },error:function(){
+              alert("error");
+           }
+        }) */
+      });
+    //resetë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ ì´ë²¤íŠ¸
+       $("button#reset").click(function(){
+         $("button.people").prop("disabled",false);
+         $("button.people").css("background","");
+         $("button#seat").css("background","");
+         clickCount=0;
+         state=false;
+         $("button#seat").removeClass("selected");
+         $("button#seat").prop("disabled",false);
+         
+      });  
+    
+    
+      $("button.people").each(function(index,dom){
+         $(dom).click(function(){
+            state=true;
+            $(this).css("background-color","red")
+            $("button.people").prop("disabled",true);
+            
+            switch ($(this).val()) {
+            case "1":
+                  $("button#seat").click(function(){
+                     if(clickCount==1){
+                        $("button#seat").prop("disabled",true);
+                        //alert(clickCount);
+                        setTimeout(function(){ alert("ì¢Œì„ ì„ íƒì´ ì™„ë£ŒëìŠµë‹ˆë‹¤."); }, 500);
+                     }  
+                  });
+               break;
+            case "2":
+               $("button#seat").click(function(){
+                  if(clickCount==2){
+                     $("button#seat").prop("disabled",true);
+                     //alert(clickCount);
+                     setTimeout(function(){ alert("ì¢Œì„ ì„ íƒì´ ì™„ë£ŒëìŠµë‹ˆë‹¤."); }, 500);
+                  }  
+               });
+               break;
+            case "3":
+               $("button#seat").click(function(){
+                  if(clickCount==3){
+                     $("button#seat").prop("disabled",true);
+                     //alert(clickCount);
+                     setTimeout(function(){ alert("ì¢Œì„ ì„ íƒì´ ì™„ë£ŒëìŠµë‹ˆë‹¤."); }, 500);
+                  }  
+               });
+               break;
+            case "4":
+               $("button#seat").click(function(){
+                  if(clickCount==4){
+                     $("button#seat").prop("disabled",true);
+                     //alert(clickCount);
+                     setTimeout(function(){ alert("ì¢Œì„ ì„ íƒì´ ì™„ë£ŒëìŠµë‹ˆë‹¤."); }, 500);
+                  }  
+               });
+               break;
+            case "5":
+               $("button#seat").click(function(){
+                  if(clickCount==5){
+                     $("button#seat").prop("disabled",true);
+                     alert(clickCount);
+                     setTimeout(function(){ alert("ì¢Œì„ ì„ íƒì´ ì™„ë£ŒëìŠµë‹ˆë‹¤."); }, 500);
+                  }  
+               });
+               break;
 
-				default:
-					break;
-				}
-			})
-		});  //
-		$("input#submit").click(function() {
-			alert(array);
-		});
+            default:
+               break;
+            }
+         })
+      });  //
+      
+      $("input#sub").click(function() {
+         scr=$("select#sc").val();
+         stime=$("select#time").val()
+         if(scr!='ìƒì˜ê´€ ì„ íƒ' && stime!='ìƒì˜ì‹œê°„ ì„ íƒ'){
+         alert(scr+":"+stime+":"+array);
+         document.location.href='SeatTest2.jsp?scr='+scr+'&stime='+stime+'&array='+array;
+         }
+         else{
+            alert("ìƒì˜ê´€ ìƒì˜ì‹œê°„ì„ ì„ íƒí•˜ì„¸ìš”.")
+         }
+
+      });
 });
 </script>
 </head>
-<body>	
-	<form action="">
-		<div> 
-			<button id="reset" value="0"  style="left: 500px;  top: 20px; width: 50px;">reset</button>
-			<button class="people" value="1" style="left: 620px;">1</button>
-			<button class="people" value="2" style="left: 650px;">2</button>
-			<button class="people" value="3" style="left: 680px;">3</button>
-			<button class="people" value="4" style="left: 710px;">4</button>
-			<button class="people" value="5" style="left: 740px;">5</button>
-		</div> 
-		<div style="border: 1px solid; text-align: center; position: absolute; left: 550px; top: 100px; width: 380px; background: gray;">½ºÅ©¸°</div>
-		
-		<div id="srow">
-			<button type="button" title="AÇà" disabled="disabled" style=" top: 150px;">A</button>
-			<button type="button" title="BÇà" disabled="disabled" style=" top: 170px;">B</button>
-			<button type="button" title="CÇà" disabled="disabled" style=" top: 190px; ">C</button>
-			<button type="button" title="DÇà" disabled="disabled" style=" top: 210px; ">D</button>
-			<button type="button" title="EÇà" disabled="disabled" style=" top: 260px; ">E</button>
-			<button type="button" title="FÇà" disabled="disabled" style=" top: 280px; ">F</button>
-			<button type="button" title="GÇà" disabled="disabled" style=" top: 300px; ">G</button>
-			<button type="button" title="HÇà" disabled="disabled" style=" top: 320px; ">H</button>
-		</div>
-		
-		<div id="dseat1"> 
-			<button type="button" title="A1" id="seat" style=" left: 600px; top: 150px; ">1</button>
-			<button type="button" title="A2" id="seat" style=" left: 630px; top: 150px; ">2</button>
-			<button type="button" title="A3" id="seat" style=" left: 660px; top: 150px; ">3</button>
-			<button type="button" title="A4" id="seat" style=" left: 690px; top: 150px; ">4</button>
-			<button type="button" title="A5" id="seat" style=" left: 720px; top: 150px; ">5</button>
-			<button type="button" title="A6" id="seat" style=" left: 780px; top: 150px; ">6</button>
-			<button type="button" title="A7" id="seat" style=" left: 810px; top: 150px; ">7</button>
-			<button type="button" title="A8" id="seat" style=" left: 840px; top: 150px; ">8</button>
-			<button type="button" title="A9" id="seat" style=" left: 870px; top: 150px; ">9</button>
-			<button type="button" title="A10" id="seat" style=" left: 900px; top: 150px; ">10</button>
-			
-			<button type="button" title="B1" id="seat" style=" left: 600px; top: 170px; ">1</button>
-			<button type="button" title="B2" id="seat" style=" left: 630px; top: 170px; ">2</button>
-			<button type="button" title="B3" id="seat" style=" left: 660px; top: 170px; ">3</button>
-			<button type="button" title="B4" id="seat" style=" left: 690px; top: 170px; ">4</button>
-			<button type="button" title="B5" id="seat" style=" left: 720px; top: 170px; ">5</button>
-			<button type="button" title="B6" id="seat" style=" left: 780px; top: 170px; ">6</button>
-			<button type="button" title="B7" id="seat" style=" left: 810px; top: 170px; ">7</button>
-			<button type="button" title="B8" id="seat" style=" left: 840px; top: 170px; ">8</button>
-			<button type="button" title="B9" id="seat" style=" left: 870px; top: 170px; ">9</button>
-			<button type="button" title="B10" id="seat" style=" left: 900px; top: 170px; ">10</button>
-			
-			<button type="button" title="C1" id="seat" style=" left: 600px; top: 190px; ">1</button>
-			<button type="button" title="C2" id="seat" style=" left: 630px; top: 190px; ">2</button>
-			<button type="button" title="C3" id="seat" style=" left: 660px; top: 190px; ">3</button>
-			<button type="button" title="C4" id="seat" style=" left: 690px; top: 190px; ">4</button>
-			<button type="button" title="C5" id="seat" style=" left: 720px; top: 190px; ">5</button>
-			<button type="button" title="C6" id="seat" style=" left: 780px; top: 190px; ">6</button>
-			<button type="button" title="C7" id="seat" style=" left: 810px; top: 190px; ">7</button>
-			<button type="button" title="C8" id="seat" style=" left: 840px; top: 190px; ">8</button>
-			<button type="button" title="C9" id="seat" style=" left: 870px; top: 190px; ">9</button>
-			<button type="button" title="C10" id="seat" style=" left: 900px; top: 190px; ">10</button>
-			
-			<button type="button" title="D1" id="seat" style=" left: 600px; top: 210px;">1</button>
-			<button type="button" title="D2" id="seat" style=" left: 630px; top: 210px;">2</button>
-			<button type="button" title="D3" id="seat" style=" left: 660px; top: 210px;">3</button>
-			<button type="button" title="D4" id="seat" style=" left: 690px; top: 210px;">4</button>
-			<button type="button" title="D5" id="seat" style=" left: 720px; top: 210px;">5</button>
-			<button type="button" title="D6" id="seat" style=" left: 780px; top: 210px;">6</button>
-			<button type="button" title="D7" id="seat" style=" left: 810px; top: 210px;">7</button>
-			<button type="button" title="D8" id="seat" style=" left: 840px; top: 210px;">8</button>
-			<button type="button" title="D9" id="seat" style=" left: 870px; top: 210px;">9</button>
-			<button type="button" title="D10" id="seat" style=" left: 900px; top: 210px;">10</button>
-			
-			
-			<button type="button" title="E1" id="seat" style=" left: 600px; top: 260PX;">1</button>
-			<button type="button" title="E2" id="seat" style=" left: 630px; top: 260px;">2</button>
-			<button type="button" title="E3" id="seat" style=" left: 660px; top: 260px;">3</button>
-			<button type="button" title="E4" id="seat" style=" left: 690px; top: 260px;">4</button>
-			<button type="button" title="E5" id="seat" style=" left: 720px; top: 260px;">5</button>
-			<button type="button" title="E6" id="seat" style=" left: 780px; top: 260px;">6</button>
-			<button type="button" title="E7" id="seat" style=" left: 810px; top: 260px;">7</button>
-			<button type="button" title="E8" id="seat" style=" left: 840px; top: 260px;">8</button>
-			<button type="button" title="E9" id="seat" style=" left: 870px; top: 260px;">9</button>
-			<button type="button" title="E10" id="seat" style=" left: 900px; top: 260px;">10</button>
-			
-			<button type="button" title="E1" id="seat" style=" left: 600px; top: 280PX;">1</button>
-			<button type="button" title="E2" id="seat" style=" left: 630px; top: 280px;">2</button>
-			<button type="button" title="E3" id="seat" style=" left: 660px; top: 280px;">3</button>
-			<button type="button" title="E4" id="seat" style=" left: 690px; top: 280px;">4</button>
-			<button type="button" title="E5" id="seat" style=" left: 720px; top: 280px;">5</button>
-			<button type="button" title="E6" id="seat" style=" left: 780px; top: 280px;">6</button>
-			<button type="button" title="E7" id="seat" style=" left: 810px; top: 280px;">7</button>
-			<button type="button" title="E8" id="seat" style=" left: 840px; top: 280px;">8</button>
-			<button type="button" title="E9" id="seat" style=" left: 870px; top: 280px;">9</button>
-			<button type="button" title="E10" id="seat" style=" left: 900px; top: 280px;">10</button>
-			
-			<button type="button" title="F1" id="seat" style=" left: 600px; top: 300PX;">1</button>
-			<button type="button" title="F2" id="seat" style=" left: 630px; top: 300px;">2</button>
-			<button type="button" title="F3" id="seat" style=" left: 660px; top: 300px;">3</button>
-			<button type="button" title="F4" id="seat" style=" left: 690px; top: 300px;">4</button>
-			<button type="button" title="F5" id="seat" style=" left: 720px; top: 300px;">5</button>
-			<button type="button" title="F6" id="seat" style=" left: 780px; top: 300px;">6</button>
-			<button type="button" title="F7" id="seat" style=" left: 810px; top: 300px;">7</button>
-			<button type="button" title="F8" id="seat" style=" left: 840px; top: 300px;">8</button>
-			<button type="button" title="F9" id="seat" style=" left: 870px; top: 300px;">9</button>
-			<button type="button" title="F10" id="seat" style=" left: 900px; top: 300px;">10</button>
-			
-			<button type="button" title="G1" id="seat" style=" left: 600px; top: 320PX;">1</button>
-			<button type="button" title="G2" id="seat" style=" left: 630px; top: 320px;">2</button>
-			<button type="button" title="G3" id="seat" style=" left: 660px; top: 320px;">3</button>
-			<button type="button" title="G4" id="seat" style=" left: 690px; top: 320px;">4</button>
-			<button type="button" title="G5" id="seat" style=" left: 720px; top: 320px;">5</button>
-			<button type="button" title="G6" id="seat" style=" left: 780px; top: 320px;">6</button>
-			<button type="button" title="G7" id="seat" style=" left: 810px; top: 320px;">7</button>
-			<button type="button" title="G8" id="seat" style=" left: 840px; top: 320px;">8</button>
-			<button type="button" title="G9" id="seat" style=" left: 870px; top: 320px;">9</button>
-			<button type="button" title="G10" id="seat" style=" left: 900px; top: 320px;">10</button>
-		</div> 
-		<input type="button" value="¿¹¾à" id="submit" style="position: absolute; left:610px; top: 400px; width: 70px;" >
-	</form>
+<body>   
+<%
+      String seat[]=request.getParameterValues("seat");
+      
+      if(seat!=null){
+         
+            String seatN[]=seat[0].split(",");
+            for(int i=0;i<seatN.length;i++){
+            %>
+      <input type="hidden" value="<%=seatN[i]%>" id="seatNum">
+            <%
+            }
+         }
+%>
+      <div> 
+         ìƒì˜ê´€
+         <select id="sc"> 
+            <option>ìƒì˜ê´€ ì„ íƒ</option>
+            <option>1ê´€</option>
+            <option>2ê´€</option>
+            <option>3ê´€</option>
+         </select>
+         ìƒì˜ì‹œê°„
+         <select id="time">
+            <option>ìƒì˜ì‹œê°„ ì„ íƒ</option>
+            <option>11ì‹œ</option>
+            <option>13ì‹œ</option>
+            <option>16ì‹œ</option>
+         </select>
+         <button id="searh" class="searh">ì¡°íšŒ</button>
+         <button id="reset" value="0"  style="left: 500px;  top: 20px; width: 50px;">reset</button>
+         <button class="people" value="1" style="left: 620px;">1</button>
+         <button class="people" value="2" style="left: 650px;">2</button>
+         <button class="people" value="3" style="left: 680px;">3</button>
+         <button class="people" value="4" style="left: 710px;">4</button>
+         <button class="people" value="5" style="left: 740px;">5</button>
+      </div> 
+      <div style="border: 1px solid; text-align: center; position: absolute; left: 550px; top: 100px; width: 380px; background: gray;">ìŠ¤í¬ë¦°</div>
+      
+      <div id="srow">
+         <button type="button"value="Aí–‰" disabled="disabled" style=" top: 150px;">A</button>
+         <button type="button"value="Bí–‰" disabled="disabled" style=" top: 170px;">B</button>
+         <button type="button"value="Cí–‰" disabled="disabled" style=" top: 190px; ">C</button>
+
+      </div>
+      
+      <div id="dseat1"> 
+         <button type="button" title="A1" id="seat" style=" left: 600px; top: 150px; ">1</button>
+         <button type="button" title="A2" id="seat" style=" left: 630px; top: 150px; ">2</button>
+         <button type="button" title="A3" id="seat" style=" left: 660px; top: 150px; ">3</button>
+         <button type="button" title="A4" id="seat" style=" left: 690px; top: 150px; ">4</button>
+
+         <button type="button" title="B1" id="seat" style=" left: 600px; top: 170px; ">1</button>
+         <button type="button" title="B2" id="seat" style=" left: 630px; top: 170px; ">2</button>
+         <button type="button" title="B3" id="seat" style=" left: 660px; top: 170px; ">3</button>
+         <button type="button" title="B4" id="seat" style=" left: 690px; top: 170px; ">4</button>
+   
+         <button type="button" title="C1" id="seat" style=" left: 600px; top: 190px; ">1</button>
+         <button type="button" title="C2" id="seat" style=" left: 630px; top: 190px; ">2</button>
+         <button type="button" title="C3" id="seat" style=" left: 660px; top: 190px; ">3</button>
+         <button type="button" title="C4" id="seat" style=" left: 690px; top: 190px; ">4</button>
+
+         
+         
+      </div> 
+      <input type="button" value="ì˜ˆì•½" id="sub" style="position: absolute; left:610px; top: 400px; width: 70px;" >
+   
 </body>
 </html>

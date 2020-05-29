@@ -13,10 +13,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	SELECT PASSWORD FROM MEMBERINFO WHERE ID=#{VALUE}
  	</select>
 	<select id="movieInfo" parameterType="java.lang.Integer" resultType="movie.com.model.MovieBean">
-		SELECT MOVIE_NO,MOVIE_TITLE,TO_CHAR(OPENDATE,'YYYY.MM.DD')OPENDATE,RUNNINGTIME,TRAILER,STORY,DIRECTOR,ACTOR,POSTER_IMG,STILL_IMG,REVIEW_NO	
+		SELECT MOVIE_NO,MOVIE_TITLE,TO_CHAR(OPENDATE,'YYYY.MM.DD')OPENDATE,RUNNINGTIME,TRAIRER,STORY,DIRECTOR,ACTOR,POSTER_IMG,STILL_IMG,REVIEW_NO	
 		FROM MOVIE
 		WHERE MOVIE_NO=#{no}	
 	</select>
+	<select id="listMovie" resultType="movie.com.model.MovieBean">
+		SELECT MOVIE_NO,MOVIE_TITLE
+		FROM MOVIE
+	</select>
+	<select id="movieSchedule" parameterType="java.lang.Integer" resultType="movie.com.model.MovieScheduleBean">
+		SELECT * FROM
+		(SELECT M.MOVIE_NO,MOVIE_TITLE,TO_CHAR(SCHEDULE_DATE,'YYYY.MM.DD')SCHEDULE_DATE,TO_CHAR(SCHEDULE_TIME,'HH24:MI')SCHEDULE_TIME,
+		RUNNINGTIME,SC.SCREEN_NO,SCREEN_NAME,SC.THEATER_NO,THEATER_NAME,THEATER_LOC
+		FROM SCREEN SC,SCHEDULE S,MOVIE M,THEATER T
+		WHERE S.MOVIE_NO=M.MOVIE_NO 
+		AND SC.SCREEN_NO=S.SCREEN_NO
+		AND SC.THEATER_NO=T.THEATER_NO)
+		WHERE MOVIE_NO=#{VALUE}
+	</select>
+	  <insert id="MovieScInsert" parameterType="scbean">
+   
+      INSERT INTO MOVIESC VALUES(#{screen},#{stime},#{seat})
+   
+   </insert>
+   <select id="checkMovieSc" parameterType="HashMap" resultType="String">
+      SELECT SEAT FROM MOVIESC WHERE SCREEN=#{scr} AND STIME=#{stime}
+   </select>
 </mapper>
 
 

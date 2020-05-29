@@ -1,3 +1,6 @@
+<%@page import="movie.com.dao.MovieDao"%>
+<%@page import="movie.com.model.MovieBean"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
@@ -10,13 +13,16 @@
   display: none;
  }
 </style>
+
+
 </head>
 <body>
+
 	<!--¿µÈ­  -->
 	<div>
-	
 		<ul>
-			<li></li>
+		
+			
 		</ul>
 	</div>
 	<!--±ØÀå -->

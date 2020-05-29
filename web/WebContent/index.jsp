@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,15 +21,53 @@
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+    body 
+    {
+       background-image:url("/web/img/background.jpg");
+   }
+    
+    .header-area .delicious-main-menu .classy-navbar .classynav > ul > li > a 
+    {
+      text-transform: uppercase;
+      padding: 12px 18px 11px;
+      background-color: transparent;
+      border-bottom: 3px solid transparent;
+      line-height: 1;
+      color: white;
+      font-weight: 600; 
+    }
+    
+    a, a:hover, a:focus 
+    {
+     -webkit-transition-duration: 500ms;
+     transition-duration: 500ms;
+     text-decoration: none;
+     outline: 0 solid transparent;
+     color: #000000;
+     font-weight: 600;
+     font-size: 14px;
+     color: white; 
+    }
+    
+    .header-area .top-header-area .top-social-info a {
+      display: inline-block;
+      color: #40ba37;
+      font-size: 13px;
+      margin-right: 30px; }
+    </style>
  <script>
-    	$(function(){
-    		$("a#signup").click(function(){
-    			window.open("/web/jsp/signup.jsp",'left=300,top=100,width=400,height=300')
-    		});
-    		$("a#signin").click(function(){
-    			window.open("/web/jsp/signin.jsp",'left=300,top=100,width=400,height=300')
-    		});
-    	});
+       $(function(){
+          $("a#signup").click(function(){
+             //window.open("/web/jsp/signup.jsp",'left=300,top=100,width=400,height=300')
+             document.location.href='/web/jsp/signup.jsp';
+          });
+          $("a#signin").click(function(){
+             //window.open("/web/jsp/signin.jsp",'left=300,top=100,width=400,height=300')
+        	  document.location.href='/web/jsp/signin.jsp';
+          });
+       });
     
     </script>
 </head>
@@ -120,7 +159,7 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li class="active"><a href="index.jsp">Home</a></li>
+                                    <li class="active"><a href="index.html">Home</a></li>
                                     <li><a href="#">영화</a>
                                         <ul class="dropdown">
                                             <li><a href="index.html">홈</a></li>
@@ -131,8 +170,8 @@
                                     </li>
                                     <li><a href="#">예매</a>
                                       <ul class="dropdown">
-                                            <li><a href="jsp/seatEx2.jsp">빠른예매</a></li>
-                                            <li><a href="about.html">상영시간표</a></li>
+                                            <li><a href="/web/jsp/SeatTest1.jsp">빠른예매</a></li>
+                                            <li><a href="/web/jsp/seatEx2.jsp">상영시간표</a></li>
                                       </ul>
                                     </li>
                                     <li><a href="#">극장</a>
@@ -194,22 +233,22 @@
            <!--좋아요버튼은 class="like" 예매버튼은 class="booking" -->
              
              <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;"> 
-                <a href="/web/jsp/MovieInfo.jsp"><img alt="" src="/web/img/poster/poster_AvengersEndgame.jpg"></img></a>
+                <a href="/web/jsp/MovieInfo.jsp?no=2" ><img alt="" src="/web/img/poster/poster_AvengersEndgame.jpg"></img></a>
                 <input type="button" class="like" value="like1"><input type="button" class="booking" value="booking1">
              </div> 
            
             <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;">
-               <a href="#"><img alt="" src="/web/img/poster/poster_PrisonEscape.jpg" ></img></a>
+               <a href="/web/jsp/MovieInfo.jsp?no=21"><img alt="" src="/web/img/poster/poster_PrisonEscape.jpg" ></img></a>
                <input type="button" class="like" value="like2"><input type="button" class="booking" value="booking2">
             </div>
            
             <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;">
-               <a href="#"><img alt="" src="/web/img/poster/poster_TheGreatestShowman.jpg" ></img></a>
+               <a href="/web/jsp/MovieInfo.jsp?no=41"><img alt="" src="/web/img/poster/poster_TheGreatestShowman.jpg" ></img></a>
                <input type="button" class="like" value="like3"><input type="button" class="booking" value="booking3">
             </div>
            
             <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px; ">
-               <a href="#"><img alt="" src="/web/img/poster/poster_TrollsWorldTour.jpg" ></img></a>
+               <a href="/web/jsp/MovieInfo.jsp?no=42"><img alt="" src="/web/img/poster/poster_TrollsWorldTour.jpg" ></img></a>
                <input type="button" class="like" value="like4"><input type="button" class="booking" value="booking4">
             </div>
          </div>
@@ -243,21 +282,21 @@
       
    </div>
       <!--검색 바 시작-->
-      	<div class="search-link">
-		<div class="cell">
-			<div class="search">
-			<input type="text" placeholder="영화명을 입력해 주세요" title="영화 검색" class="input-text" id="movieName">
-			<button type="button" class="btn" id="btnSearch"><i class="iconset ico-search-w"></i> 검색</button>
-			</div>
-		</div>
+         <div class="search-link">
+      <div class="cell">
+         <div class="search">
+         <input type="text" placeholder="영화명을 입력해 주세요" title="영화 검색" class="input-text" id="movieName">
+         <button type="button" class="btn" id="btnSearch"><i class="iconset ico-search-w"></i> 검색</button>
+         </div>
+      </div>
 
-			<div class="cell"><a href="#" title="상영시간표 보기"><i class="iconset ico-schedule-main"></i> 상영시간표</a></div>
-			<div class="cell"><a href="#" title="박스오피스 보기"><i class="iconset ico-boxoffice-main"></i> 박스오피스</a></div>
-			<div class="cell"><a href="#" title="빠른예매 보기"><i class="iconset ico-quick-reserve-main"></i> 빠른예매</a></div>
-		</div>
-	   <!--검색바 끝 -->
-	   
-	   
+         <div class="cell"><a href="#" title="상영시간표 보기"><i class="iconset ico-schedule-main"></i> 상영시간표</a></div>
+         <div class="cell"><a href="#" title="박스오피스 보기"><i class="iconset ico-boxoffice-main"></i> 박스오피스</a></div>
+         <div class="cell"><a href="#" title="빠른예매 보기"><i class="iconset ico-quick-reserve-main"></i> 빠른예매</a></div>
+      </div>
+      <!--검색바 끝 -->
+      
+      
 
     <!-- ##### Footer Area Start ##### -->
 

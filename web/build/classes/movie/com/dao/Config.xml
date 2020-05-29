@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <typeAliases>
       <typeAlias type="movie.com.model.MovieBean" alias="movie"/>
       <typeAlias type="movie.com.model.MemberBean" alias="member"/>
+      <typeAlias type="movie.com.model.MovieScBean" alias="scbean"/>
     </typeAliases>
     <!-- DB연동 -->
     <environments default="development">

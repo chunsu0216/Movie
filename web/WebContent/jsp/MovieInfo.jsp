@@ -204,8 +204,30 @@
 .movie_detail_aside_menu ul > li .btn_ic_wish.active {background:url("../../Content/images/icon/heart_bdr_26_on.png") no-repeat 10px 0; color:#FF243E}
 .movie_detail_aside_menu ul > li.area_reserve {margin-top:-15px;}
 .movie_detail_aside_menu ul > li.area_reserve .btn_col1 {min-width:170px; font-size:18px;}
-/********************************************* */
 
+
+#review_insert {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 97%;
+}
+
+#review_insert td, #review_insert th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#review_insert tr:nth-child(even){background-color: #f2f2f2;}
+
+#review_insert tr:hover {background-color: #ddd;}
+
+#review_insert th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
 
 #review {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -230,6 +252,8 @@
   color: white;
 }
 
+
+
 * {
   box-sizing: border-box;
 }
@@ -244,7 +268,43 @@ body {
   margin-left: 0px;
   padding-left: 20px;
 }
+#star_grade a{
+        text-decoration: none;
+        color: gray;
+    }
+    #star_grade a.on{
+        color: red;
+    }
+    
+#star_grade2 a{
+        text-decoration: none;
+        color: red;
+    }
 </style>
+<script type="text/javascript">
+
+
+   $(function(){   
+      for (var i = 0; i <=5; i++) {
+      $("a#star"+i+"").click(function(){
+         $(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */  
+           $(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+           //alert($(this).attr("id"));
+           starVal=$(this).attr("id");
+           //alert(starVal);
+               return false;
+         $.ajax({
+            url:''
+            
+         });//ajax     
+               
+      });   
+      }
+      
+      
+   });
+
+</script>
 </head>
 <body>
 <%
@@ -253,20 +313,19 @@ body {
 %>
 
 
-<%
-   response.setCharacterEncoding("EUC-KR");
-   int no=41;
+<% 
+   int no=1;
+   response.setCharacterEncoding("UTF-8");
    MovieBean bean=null;
-    bean=(MovieBean)MovieDao.movieInfo(no); 
+   bean=(MovieBean)MovieDao.movieInfo(no); 
 %>
-
 <div id="contents" class="contents_movie_detail" >
    <h2 class="hidden">영화</h2>
    <h3 class="hidden">영화 상세정보</h3>
    
    <div class="detail_top_wrap">
       <div class="poster_info">
-         <img src="/web/img/poster/poster_AvengersEndgame.jpg">
+         <img src="/web/img/poster/<%=bean.getPoster_img()%>">
       </div>
       <div class="tit_info">
          <span class="ic_grade gr_15">15세이상관람가 </span> 
@@ -336,7 +395,7 @@ body {
 <div class="container">
 
   <br><br><br>
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" style="margin-bottom: 20px;">
     <li class="active"><a data-toggle="tab" href="#home">영화정보</a></li> 
     <li><a data-toggle="tab" href="#menu1">예고편/스틸컷</a></li>
     <li><a data-toggle="tab" href="#menu2">평점 및 관람평</a></li>
@@ -349,51 +408,88 @@ body {
     </div>
     <div id="menu1" class="tab-pane fade">
      <%--  <iframe width="1131" height="400" src="<%=bean.getTrailer() %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> --%>
- 		 <iframe width="1131" height="400" src="https://www.youtube.com/embed/xUDhdCsLkjU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ 	 <%=bean.getTrairer() %>
      
     </div>
-    <div id="menu2" class="tab-pane fade">
+
+     <div id="menu2" class="tab-pane fade">
 
 
 
 
+
+<div class="content" style="margin-top: 20px;">
+
+  <table id="review_insert">
+  <tr>
+    <th width="27.56px"></th>
+    <th width="83.56px">Date</th>
+    <th width="73.78px">Id</th>
+    <th width="528.89px">내용</th>
+    <th width="115.56px">별점</th>
+    <th width="61.33px"></th>
+  </tr>
+
+  <tr id="content">  <!-- style="display:none;" -->
+ <form id="insertReview" name="insertReview" method="post" action="/web/jsp/insertReview.jsp">
+  <td><input type="Rno" id="Rno" name="Rno" style="width: 25px;"></td>
+    <td><%=sf.format(nowTime)%></td>
+    <td><input type="text" id="id" name="id" placeholder="id"></td>
+    <td><input type="text" id="con" name="con" placeholder="review" style="width: 515px;" /></td>
+    <td id="star_grade">
+       <a href="#" class="star1" id="star1" lang="1"><i id="star1" >★</i></a>
+       <a href="#" class="star2" id="star2" lang="2">★</a>
+       <a href="#" class="star" id="star3" lang="3">★</a>
+       <a href="#" class="star" id="star4" lang="4">★</a>
+       <a href="#" class="star" id="star5" lang="5">★</a>
+       <input type="hidden" value="starVal" id="starVal">
+    </td>
+    <td><input type="button" id="insertR" name="insertR" value="등록"> </td>
+  </form>  
+  </tr>
+</div>
 
 <div class="content">
 
   <table id="review">
-  <tr>
-    <th>Review#</th>
-    <th>Id</th>
-    <th>Date</th>
-    <th>Review</th>
-    <th>Rating</th>
+<h3 style="height: 20px; align-content: center; margin-top: 5px">REVIEW</h3>
+ <tr>
+    <th width="27.56px"></th>
+    <th width="83.56px">Date</th>
+    <th width="73.78px">Id</th>
+    <th width="528.89px">내용</th>
+    <th width="115.56px">별점</th>
+    <th width="61.33px"></th>
   </tr>
-  
-  <tr id="content" lang="${i.no}" >  <!-- style="display:none;" -->
-  <td><input type="checkbox" id="${i.id}"  name="nt" value="${i.no}" /> ${cnt.count}</td>
-    <td></td>
+  <td>1</td>
     <td><%=sf.format(nowTime)%></td>
-    <td><input type="text" value="review" id="review" /></td>
-    <td><input type="text" value="rating" id="rating" /></td>
+    <td>cat</td>
+    <td>마블 3000만큼 사랑합니다</td>
+    <td id="star_grade2">
+       <a href="#" class="star1" id="star1" lang="1"><i id="star1" >★</i></a>
+       <a href="#" class="star2" id="star2" lang="2">★</a>
+       <a href="#" class="star" id="star3" lang="3">★</a>
+       <a href="#" class="star" id="star4" lang="4">★</a>
+       <a href="#" class="star" id="star5" lang="5">★</a>
+    </td>
+    <td><input type="button" id="mod" name="mod" value="수정">
+    <input type="button" id="del" name="del" value="삭제">
+     </td>
+  
     
-  </tr>
-  
-  
 <c:forEach var="i" items="${review}" varStatus="cnt">
-  <tr id="content" lang="${i.no}">
+  <tr id="content">
   <td><input type="checkbox" id="${i.no}"  name="nt" value="${i.no}" /> ${cnt.count}</td>
     <td>${i.id }</td>
     <td>${i.regdate}</td>
     <td>${i.review}</td>
-    <td>${i.rating}</td>
-    
+    <td id="showrating">${i.rating}</td>
+    <td><input type="button" value="등록" id="submit"> </td>
   </tr>
 </c:forEach>
-
-   <span class="buttonFuc"><a href="javascript:writeReview()">글쓰기</a></span>
-   <input type="button" value="삭제">
-</div> -
-  
+</div>
+         
+      
     </div>
   
   </div>

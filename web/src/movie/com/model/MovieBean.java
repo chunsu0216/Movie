@@ -1,19 +1,18 @@
 package movie.com.model;
 
 public class MovieBean {
-
-
 	private int movie_no;
 	private String movie_title;
 	private String opendate;
 	private int runningtime;
-	private String trailer;
+	private String trairer;
 	private String story;
 	private String director;
 	private String actor;
 	private String poster_img;
 	private String still_img;
 	private int review_no;
+	
 	public int getMovie_no() {
 		return movie_no;
 	}
@@ -38,11 +37,12 @@ public class MovieBean {
 	public void setRunningtime(int runningtime) {
 		this.runningtime = runningtime;
 	}
-	public String getTrailer() {
-		return trailer;
+	
+	public String getTrairer() {
+		return trairer;
 	}
-	public void setTrailer(String trailer) {
-		this.trailer = trailer;
+	public void setTrairer(String trairer) {
+		this.trairer = trairer;
 	}
 	public String getStory() {
 		return story;
@@ -79,6 +79,13 @@ public class MovieBean {
 	}
 	public void setReview_no(int review_no) {
 		this.review_no = review_no;
+	}
+	@Override
+	public String toString() {
+		return "MovieBean [movie_no=" + movie_no + ", movie_title=" + movie_title + ", opendate=" + opendate
+				+ ", runningtime=" + runningtime + ", trairer=" + trairer + ", story=" + story + ", director="
+				+ director + ", actor=" + actor + ", poster_img=" + poster_img + ", still_img=" + still_img
+				+ ", review_no=" + review_no + "]";
 	}
 	
 

@@ -314,8 +314,9 @@ body {
 
 
 <% 
-   int no=1;
+  
    response.setCharacterEncoding("UTF-8");
+   int no=Integer.parseInt(request.getParameter("no"));
    MovieBean bean=null;
    bean=(MovieBean)MovieDao.movieInfo(no); 
 %>
@@ -408,7 +409,7 @@ body {
     </div>
     <div id="menu1" class="tab-pane fade">
      <%--  <iframe width="1131" height="400" src="<%=bean.getTrailer() %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> --%>
- 	 <%=bean.getTrairer() %>
+ 	 <%=bean.getTrailer() %>
      
     </div>
 

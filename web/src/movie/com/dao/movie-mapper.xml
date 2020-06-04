@@ -13,12 +13,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	SELECT PASSWORD FROM MEMBERINFO WHERE ID=#{VALUE}
  	</select>
 	<select id="movieInfo" parameterType="java.lang.Integer" resultType="movie.com.model.MovieBean">
-		SELECT MOVIE_NO,MOVIE_TITLE,TO_CHAR(OPENDATE,'YYYY.MM.DD')OPENDATE,RUNNINGTIME,TRAIRER,STORY,DIRECTOR,ACTOR,POSTER_IMG,STILL_IMG,REVIEW_NO	
+		SELECT MOVIE_NO,MOVIE_TITLE,TO_CHAR(OPENDATE,'YYYY.MM.DD')OPENDATE,RUNNINGTIME,TRAILER,STORY,DIRECTOR,ACTOR,POSTER_IMG,STILL_IMG,REVIEW_NO	
 		FROM MOVIE
 		WHERE MOVIE_NO=#{no}	
 	</select>
 	<select id="listMovie" resultType="movie.com.model.MovieBean">
-		SELECT MOVIE_NO,MOVIE_TITLE
+		SELECT MOVIE_NO,MOVIE_TITLE,OPENDATE,RUNNINGTIME,TRAILER,STORY,DIRECTOR,ACTOR,POSTER_IMG,STILL_IMG,REVIEW_NO
 		FROM MOVIE
 	</select>
 	<select id="movieSchedule" parameterType="java.lang.Integer" resultType="movie.com.model.MovieScheduleBean">

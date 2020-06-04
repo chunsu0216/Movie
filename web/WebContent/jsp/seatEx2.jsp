@@ -68,43 +68,96 @@ div.theater{
 </style>
 
 <script type="text/javascript">
+function ajaxData(v){
+	
+	
+}
 
 $( function() {
+	var mTitle;
+	var mTheater;
+	var mDate;
+	var mScreen;
+	var mTime;
+	
 	
     $("a.movie").click(function(){
-    	var no;
-    	//no=($(this).attr("lang"));
-    	
-    	//alert(no);
+    	mTitle=$(this).attr("title");
+    
    		$.ajax({
     		url:'/web/ajax/Schedule.jsp',
     		type:'POST',
     		dataType:'json',
     		data:{no:$(this).attr("lang")},
     		success:function(v){
-    			//$("div#sTheater").remove();
-    			//$("div#sTheater").append("<h3>"+v+"</h3>");
-    			/* $(v).find("theater").each(function(){
-    				var tLoc=$(this).find(("a#tLoc").html());
-    				alert(tLoc);
-    			});  */
-    			console.log(v);
-    			 $("div#sTheater a").remove();
-    			 $("div#schedule a").remove();
+    			
+    	/* 
+    			var arrayLoc=[];
+    			var arrayTname=[];
+    			var arrayDate=[];
+    			var arrayTime=[];
+    			
     			$(v).each(function(index,dom){   
-   
-					$("div#sTheater").append("<a id='tname'><h3>"+dom.TNAME+"</h3><a>");
-					
-					$("a#tname").click(function(){
-						$("div#schedule").append("<a id='tdate'><h3>"+dom.DATE+"</h3><a>");
-						$("a#tdate").click(function(){
-							$("div#stime").append("<a id='tTime'><h3>"+dom.TIME+"</h3><a>");
-						});
-					});
-					
-				
+    				arrayLoc.push(dom.TLOC);
+    				arrayTname.push(dom.TNAME);
+    				arrayDate.push(dom.DATE);
+    				arrayTime.push(dom.TIME);
     			}); 
-  
+    			 var final_Tname = [];
+    			 	
+    			  $.each(arrayTname, function(i, d){ 
+    				 if($.inArray(d, final_Tname) === -1) final_Tname.push(d);
+    			  });  
+				 
+    			  */
+    			// console.log(v);
+				 
+	       		
+    			$(v).each(function(index,dom){   
+    				
+						$("a#mLoc").click(function(){
+							var tloc=$.trim($(this).text());
+							if(tloc==dom.TLOC){
+								$("div#sTheater").append("<label><input type='checkbox' id='tname' value='"+dom.TNAME+"'>"+dom.TNAME+"</label><br><br>");
+								//$("label[for id='tdate'],input#tname").remove();
+							}
+							$("input#tname").click(function(){
+								// $("input#tname").remove();
+								mTheater=$("input:checkbox[id='tname']:checked").val();
+								$("div#schedule").append("<label for='tdate'><input type='checkbox' id='tdate' name='"+dom.DATE+"' value='"+dom.DATE+"'>"+dom.DATE+"</label><br><br>");
+								$("input#tdate").click(function(){
+									mDate=$("input:checkbox[id='tdate']:checked").val();
+
+									$("div#stime").append("<label><input type='checkbox' id ='time' name='"+dom.SCREEN+"' value='"+dom.TIME+"'>"+dom.SCREEN+"<h3>"+dom.TIME+"</h3><lable>");
+									
+									$("input#time").click(function(){
+										 mTime=$("input:checkbox[id='time']:checked").val();
+										 mScreen=$("input:checkbox[id='time']:checked").attr("name");
+										 
+										 if($("input[id='time']").is(":checked")){
+											 var result=confirm('좌석을 선택하시겠습니까?');
+											 if(result){ 
+												document.location.href='SeatTest1.jsp?movie='+mTitle+"&theater="+mTheater+'&date='+mDate+"&screen="+mScreen+"&time="+mTime;
+											 }else{
+												return false;
+											 }
+										 }
+										
+									});
+								});
+							});	 //input click
+									
+				
+						
+ 					});//a#mLoc Click
+						/* $("input:checkbox[id='tname']:checked").val();
+						$("input:checkbox[id='tdate']:checked").val();
+						$("input:checkbox[id='time']:checked").val(); */
+						// console.log(mtitle+" "+mTheater+" "+mData+" "+mTime); 
+					
+					
+    			}); //each 
+
     		},
     		error:function(v){
     			alert('error');
@@ -159,13 +212,13 @@ $( function() {
 	<div class="vertical-menu">
 		<a href="#" class="active"><h1>극장 선택</h1></a>
 			<div class="theater">
-				<p style="text-align: center;font-size: 20;"><h3>지역</h3></p>
-		  		<a href="#"><h3>서울</h3></a>
-		  		<a href="#"><h3>경기</h3></a>
-		  		<a href="#"><h3>충청/대전/세종</h3></a>
-		  		<a href="#"><h3>경상/대구/부산</h3></a>
-		  		<a href="#"><h3>전라/광주</h3></a>
-		  		<a href="#"><h3>강원</h3></a>
+				<p  style="text-align: center;font-size: 20; "><h3>지역</h3></p>
+		  		<a href="#" id="mLoc"><h3>서울</h3></a>
+		  		<a href="#" id="mLoc"><h3>경기</h3></a>
+		  		<a href="#" id="mLoc"><h3>충청/대전/세종</h3></a>
+		  		<a href="#" id="mLoc"><h3>경상/대구/부산</h3></a>
+		  		<a href="#" id="mLoc"><h3>전라/광주</h3></a>
+		  		<a href="#" id="mLoc"><h3>강원</h3></a>
 		  	<!-- 	<a href="#"><h3>제주</h3></a> -->
 		 
 			</div>

@@ -1,185 +1,334 @@
 	
------ 영화(TABLE MOVIE)---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	  
-	   1. 테이블 생성
-		CREATE TABLE MOVIE (
-			MOVIE_NO    NUMBER(8)   NOT NULL, -- 영화번호
-			MOVIE_TITLE VARCHAR(20) NOT NULL, -- 영화제목
-			OPENDATE    DATE        NOT NULL, -- 개봉일
-			RUNNINGTIME DATE        NOT NULL, -- 영화시간
-			TRAIRER     CLOB        NULL,     -- 예고편
-			STORY       CLOB        NOT NULL, -- 스토리
-			DIRECTOR    VARCHAR(50) NOT NULL, -- 감독
-			ACTOR       VARCHAR(50) NOT NULL, -- 배우
-			POSTER_IMG  VARCHAR(50) NULL,     -- 포스터이미지
-			STILL_IMG   CLOB        NULL,     -- 스틸컷
-			REVIEW_NO   VARCHAR(20) NOT NULL  -- 리뷰번호
+------------------테이블 전체 DROP(제약사항,SEQUENCE포함----------------------------------------------------------------------------------------------------------
+
+-- 상영일정
+ALTER TABLE SCHEDULE
+	DROP CONSTRAINT FK_MOVIE_TO_SCHEDULE; -- 영화 -> 상영일정
+
+-- 상영일정
+ALTER TABLE SCHEDULE
+	DROP CONSTRAINT FK_SCREEN_TO_SCHEDULE; -- 상영관정보 -> 상영일정
+
+-- 예매정보
+ALTER TABLE RESERVE
+	DROP CONSTRAINT FK_MOVIE_TO_RESERVE; -- 영화 -> 예매정보
+
+-- 상영관정보
+ALTER TABLE SCREEN
+	DROP CONSTRAINT FK_THEATER_TO_SCREEN; -- 극장정보 -> 상영관정보
+
+-- 상영일정
+ALTER TABLE SCHEDULE
+	DROP CONSTRAINT PK_SCHEDULE; -- 상영일정 기본키
+
+-- 영화
+ALTER TABLE MOVIE
+	DROP CONSTRAINT PK_MOVIE; -- 영화 기본키
+
+-- 관람등급
+ALTER TABLE RATING
+	DROP CONSTRAINT PK_RATING; -- 관람등급 기본키
+
+-- 예매정보
+ALTER TABLE RESERVE
+	DROP CONSTRAINT PK_RESERVE; -- 예매정보 기본키
+
+-- 좌석
+ALTER TABLE SEAT
+	DROP CONSTRAINT PK_SEAT; -- 좌석 기본키
+
+-- 상영관정보
+ALTER TABLE SCREEN
+	DROP CONSTRAINT PK_SCREEN; -- 상영관정보 기본키
+
+-- 극장정보
+ALTER TABLE THEATER
+	DROP CONSTRAINT PK_THEATER; -- 극장정보 기본키
+
+-- 회원
+ALTER TABLE MEMBERINFO
+	DROP CONSTRAINT PK_MEMBERINFO; -- 회원 기본키
+
+-- 상영일정
+DROP TABLE SCHEDULE CASCADE CONSTRAINTS;
+
+-- 영화
+DROP TABLE MOVIE CASCADE CONSTRAINTS;
+
+-- 관람등급
+DROP TABLE RATING CASCADE CONSTRAINTS;
+
+-- 예매정보
+DROP TABLE RESERVE CASCADE CONSTRAINTS;
+
+-- 좌석
+DROP TABLE SEAT CASCADE CONSTRAINTS;
+
+-- 임시 테이블
+DROP TABLE Temporary CASCADE CONSTRAINTS;
+
+-- 상영관정보
+DROP TABLE SCREEN CASCADE CONSTRAINTS;
+
+-- 극장정보
+DROP TABLE THEATER CASCADE CONSTRAINTS; 
+
+-- 회원
+DROP TABLE MEMBERINFO CASCADE CONSTRAINTS;
+
+--시퀀스
+DROP SEQUENCE MOVIE_SEQ; --MOVIE 테이블 (이제 SEQUENCE안씀)
+DROP SEQUENCE SCHEDULE_SEQ; --SCHEDULE테이블
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------- 영화--------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE MOVIE (
+	MOVIE_NO    NUMBER(8)    NOT NULL, -- 영화번호
+	MOVIE_TITLE VARCHAR2(20) NOT NULL, -- 영화제목
+	OPENDATE    DATE         NOT NULL, -- 개봉일
+	RUNNINGTIME VARCHAR2(10) NOT NULL, -- 영화시간
+	TRAILER     CLOB         NULL,     -- 예고편
+	STORY       CLOB         NOT NULL, -- 스토리
+	DIRECTOR    VARCHAR2(50) NOT NULL, -- 감독
+	ACTOR       VARCHAR2(100)NOT NULL, -- 배우
+	POSTER_IMG  VARCHAR2(50) NULL,     -- 포스터이미지
+	STILL_IMG   CLOB         NULL,     -- 스틸컷
+	REVIEW_NO   VARCHAR2(20) NOT NULL  -- 리뷰번호
+);
+
+-- 영화
+ALTER TABLE MOVIE
+	ADD
+		CONSTRAINT PK_MOVIE -- 영화 기본키
+		PRIMARY KEY (
+			MOVIE_NO -- 영화번호
 		);
-		
-		2. 제약조건 
-		ALTER TABLE MOVIE
-			ADD
-				CONSTRAINT PK_MOVIE -- 영화 기본키
-				PRIMARY KEY (
-					MOVIE_NO -- 영화번호
-				);
-		
-		3.시퀀스 생성
-		CREATE SEQUENCE MOVIE_SEQ;
-		
-		4.내용 삽입
-		
-		INSERT INTO MOVIE VALUES(
-		MOVIE_SEQ.NEXTVAL,'어밴져스: 엔드게임','2019.04.24',
-		181,'<iframe width="1131" height="400" src="https://www.youtube.com/embed/xUDhdCsLkjU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-		'인피니트 워 이후 절반만 살아남은 지구<br>마지막 희망이 된 어벤져스<br>먼저 떠난 그들을 위해 모든 것을 걸었다!<br><br><br>위대한 어벤져스<br>운명을 바꿀 최후의 전쟁이 펼쳐진다!',
+
+    INSERT INTO MOVIE VALUES(
+		1,'어밴져스: 엔드게임',TO_DATE('2019-04-24','YYYY-MM-DD'),
+		'181','<iframe width="1131" height="400" src="https://www.youtube.com/embed/xUDhdCsLkjU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+		'<h4>인피니트 워 이후 절반만 살아남은 지구<br>마지막 희망이 된 어벤져스<br>먼저 떠난 그들을 위해 모든 것을 걸었다!</h4><br><br><br>위대한 어벤져스<br>운명을 바꿀 최후의 전쟁이 펼쳐진다!',
 		'안소니 루소, 조 루소','로버트 다우니 주니어, 크리스 에반스, 크리스 헴스워스, 마크 러팔로, 스칼렛 요한슨 등',
 		'poster_AvengersEndgame.jpg',
 		'still_AvengersEndgame1.jpg,still_AvengersEndgame2.jpg,still_AvengersEndgame3.jpg,still_AvengersEndgame4.jpg,still_AvengersEndgame5.jpg,still_AvengersEndgame6.jpg',1);
-
-
-----상영일정(TABLE SCHEDULE)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-		1.테이블 생성
-			CREATE TABLE SCHEDULE (
-				MOVIE_NO      NUMBER(8)   NOT NULL, -- 영화번호
-				SCHEDULE_DATE DATE        NOT NULL, -- 상영일자
-				SCHEDULE_TIME DATE        NOT NULL, -- 상영시간
-				CATEGORY      VARCHAR(20) NOT NULL, -- 분류
-				CHARGE        NUMBER(16)  NOT NULL, -- 요금
-				SCREEN_NO     NUMBER(10)  NOT NULL  -- 상영관번호
-			);
-
-		2.제약조건
-			2-1) 기본제약조건
-			
-			ALTER TABLE SCHEDULE
-				ADD
-					CONSTRAINT PK_SCHEDULE -- 상영일정 기본키
-					PRIMARY KEY (
-						MOVIE_NO,  -- 영화번호
-						SCREEN_NO  -- 상영관번호
-					);
-					
-			2-2)외래키 등
-			
-				ALTER TABLE SCHEDULE
-					ADD
-						CONSTRAINT FK_MOVIE_TO_SCHEDULE -- 영화 -> 상영일정
-						FOREIGN KEY (
-							MOVIE_NO -- 영화번호
-						)
-						REFERENCES MOVIE ( -- 영화
-							MOVIE_NO -- 영화번호
-						)
-						ON DELETE NO ACTION
-						ON UPDATE NO ACTION;
-	
-				
-				ALTER TABLE SCHEDULE
-					ADD
-						CONSTRAINT FK_SCREEN_TO_SCHEDULE -- 상영관정보 -> 상영일정
-						FOREIGN KEY (
-							SCREEN_NO -- 상영관번호
-						)
-						REFERENCES SCREEN ( -- 상영관정보
-							SCREEN_NO -- 상영관번호
-						)
-						ON DELETE NO ACTION
-						ON UPDATE NO ACTION;
-
-
-
----- 관람등급(TABLE RATING)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
-		1.테이블 생성
-			CREATE TABLE RATING (
-				RATING_NO NUMBER(8)   NOT NULL, -- 관람등급번호
-				MOVIE_NO  NUMBER(8)   NOT NULL, -- 영화번호
-				RATING    VARCHAR(10) NOT NULL  -- 관람등급
-			);
-
-		2.제약조건
-			2-1) 기본제약
-			
-			ALTER TABLE RATING
-				ADD
-					CONSTRAINT PK_RATING -- 관람등급 기본키
-					PRIMARY KEY (
-						RATING_NO, -- 관람등급번호
-						MOVIE_NO   -- 영화번호
-					);
-					
-			2-2) 외래키 등
-			
-			ALTER TABLE RATING
-				ADD
-					CONSTRAINT FK_MOVIE_TO_RATING -- 영화 -> 관람등급
-					FOREIGN KEY (
-						MOVIE_NO -- 영화번호
-					)
-					REFERENCES MOVIE ( -- 영화
-						MOVIE_NO -- 영화번호
-					)
-					ON DELETE NO ACTION
-					ON UPDATE NO ACTION;				
--- 극장정보(TABLE THEATER)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	1.테이블 생성
-		CREATE TABLE THEATER (
-			THEATER_NO   NUMBER(10)  NOT NULL, -- 극장번호
-			THEATER_NAME VARCHAR2(20) NOT NULL, -- 극장지점
-			THEATER_LOC  VARCHAR2(20) NOT NULL, -- 극장지역분류
-		    THEATER_ADDRESS VARCHAR2(100) NOT NULL,--극장주소
-			THEATER_MAP  VARCHAR2(15)  NOT NULL, -- 극장지도코드
-			THEATER_TEL  VARCHAR2(20) NOT NULL  -- 극장번화번호
-		);
-
-
-	2.제약 조건
-	
-		2-1)기본제약조건
-		ALTER TABLE THEATER
-			ADD
-				CONSTRAINT PK_THEATER -- 극장정보 기본키
-				PRIMARY KEY (
-					THEATER_NO -- 극장번호
-				);
-	
-	
-	3.내용 삽입
-		INSERT INTO THEATER VALUES(
-		1,'강남','서울','서울특별시 서초구 서초대로77길 3 아라타워 8층 무비박스 강남지점','1590535728078','02)215-1588');
-		
-		INSERT INTO THEATER VALUES(
-		2,'강동','서울','서울특별시 강동구 성내로 48 무비박스 강동지점','1590535848167','02)216-1588');	
-		
-		INSERT INTO THEATER VALUES(
-		3,'동대문','서울','서울특별시  중구 장충단로 247 굿모닝시티9층 무비박스 동대문지점','1590536948810','02)217-1588');	
-		
-		INSERT INTO THEATER VALUES(
-		4,'홍대','서울','서울특별시  마포구 동교동 양화로 147 , 7-12층 무비박스 홍대지점','1590537311365','02)217-1588');	
-		
-		
----- 상영관정보(TABLE SCREEN)----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	1.테이블 생성
-		CREATE TABLE SCREEN (
-			SCREEN_NO   NUMBER(10)  NOT NULL, -- 상영관번호
-			SCREEN_NAME VARCHAR(20) NULL,     -- 상영관명
-			SEAT_AMOUNT NUMBER(10)  NULL      -- 좌석수
-		);
-
-	2. 제약조건
-		ALTER TABLE SCREEN
-			ADD
-				CONSTRAINT PK_SCREEN -- 상영관정보 기본키
-				PRIMARY KEY (
-					SCREEN_NO -- 상영관번호
-				);
-
        
-----회원(MEMBERINFO)------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	INSERT INTO MOVIE VALUES(	
+	2,
+	'프리즌 이스케이프',
+	TO_DATE('2020-05-06','YYYY-MM-DD'),
+	'106',
+	'<iframe width="1280" height="720" src="https://www.youtube.com/embed/fOfuEjDcdSo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'<h4>404일의 감금, 나가야 할 문은 15개!</h4><br>성공률 0%의 탈옥이 시작된다!<br><br>인권운동가 ‘팀’과 ‘스티븐’은 억울한 판결로 투옥된다.<br>둘은 불의에 굴복하지 않고 탈출을 결심한다.<br>나가기 위해 열어야 할 강철 문은 15개!<br>그들은 나뭇조각으로 열쇠를 만들기 시작하고,<br>지금껏 아무도 성공한 적 없는 0%의 확률 속에서<br>목숨을 건 단 한 번의 기회를 노리는데…<br>',
+	'프란시스 아난','다니엘 래드클리프, 다니엘 웨버, 이안 하트, 나단 페이지, 마크 레너드 윈터 등',
+	'poster_PrisonEscape.jpg',
+	'ESCAPE FROM PRETORIA_01.jpg, ESCAPE FROM PRETORIA_02.jpg, ESCAPE FROM PRETORIA_03.jpg, ESCAPE FROM PRETORIA_04.jpg',
+	2);	
+
+
+	INSERT INTO MOVIE VALUES(	
+	3,
+	'위대한 쇼맨',
+	TO_DATE('2020-05-21','YYYY-MM-DD'),
+	'104',
+	'<iframe width="779" height="438" src="https://www.youtube.com/embed/cnIOq6P8PUU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'<h4>불가능한 꿈, 그 이상의 쇼!</h4><br>쇼 비즈니스의 창시자이자, 꿈의 무대로 전세계를 매료시킨 남자 ‘바넘’의 이야기에서 영감을 받아 탄생한 오리지널 뮤지컬 영화 <위대한 쇼맨>.<br>
+	 <레미제라블> 이후 다시 뮤지컬 영화로 돌아온 휴 잭맨부터 잭 에프론, 미셸 윌리엄스, 레베카 퍼거슨, 젠다야까지 할리우드 최고의 배우들이 합류해 환상적인 앙상블을 선보인다.
+ 	  여기에 <미녀와 야수> 제작진과 <라라랜드> 작사팀의 합류로 더욱 풍성해진 비주얼과 스토리, 음악까지 선보일 <위대한 쇼맨>은 ‘우리는 누구나 특별하다’는 메시지로 관객들에게 재미는 물론, 감동까지 선사할 것이다.<br>
+ 	 <br>THIS IS ME! 우리는 누구나 특별하다!<br>',
+ 	 '마이클 그레이시',
+ 	 '휴 잭맨,잭 에프런, 미쉘 윌리엄스, 레베카 퍼거슨, 젠다야 콜맨',
+ 	 'poster_TheGreatestShowman.jpg',
+ 	 'The Greatest Showman_01.jpg, The Greatest Showman_02.jpg, The Greatest Showman_03.jpg, The Greatest Showman_04.jpg',
+ 	 3);
+	
+	-트롤
+	INSERT INTO MOVIE VALUES(	
+	4,
+	'트롤:월드투어',
+	TO_DATE('2020-04-29','YYYY-MM-DD'),
+	'91',
+	'<iframe width="779" height="438" src="https://www.youtube.com/embed/J-2AjrypRgw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'<h4>팝, 록, 클래식, 컨트리, 펑크, 테크노, K-POP까지 세상의 모든 음악이 쏟아진다!</h4>
+	 노래와 춤을 즐기며 평화로운 나날을 보내던 팝 트롤 ‘파피’와 ‘브랜치’ 그리고 친구들.<br>
+	 어느 날 ‘파피’는 자신들 외에도 서로 다른 외모와 노래를 가진 5개의 트롤 마을이 더 있다는 것을 알게 된다.<br>
+ 	 <br><br>
+ 	 모두와 친구가 되어 신나게 지내고 싶은 ‘파피’와 달리,<br>
+ 	 록 트롤 마을의 여왕 ‘바브’는 록을 제외한 모든 음악을 없애기 위해 다른 트롤 마을들을 하나씩 파괴하기 시작하고<br>
+ 	‘파피’는 위기에 빠진 트롤 세계를 구하기 위해 친구들과 위험천만한 모험을 떠나게 되는데…<br>',
+	'월트 도른, 데이빗 P. 스미스',
+	' 안나 켄드릭, 저스틴 팀버레이크',
+	'poster_TrollsWorldTour.jpg',
+	'TrollsWorldTour_01.jpg, TrollsWorldTour_02.jpg, TrollsWorldTour_03.jpg, TrollsWorldTour_04.jpg',
+	 4);
+       
+SELECT * FROM MOVIE;
+-- 극장정보--------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE THEATER (
+	THEATER_NO   NUMBER(10)   NOT NULL, -- 극장번호
+	THEATER_NAME VARCHAR2(20) NOT NULL, -- 극장지점
+	THEATER_LOC  VARCHAR2(30) NOT NULL, -- 극장위치
+    THEATER_ADDRESS	VARCHAR2(100) NOT NULL,--극장주소
+	THEATER_MAP  CLOB         NOT NULL, -- 극장지도
+	THEATER_TEL  VARCHAR2(20) NOT NULL  -- 극장번화번호
+);
+
+-- 극장정보
+ALTER TABLE THEATER
+	ADD
+		CONSTRAINT PK_THEATER -- 극장정보 기본키
+		PRIMARY KEY (
+			THEATER_NO -- 극장번호
+		);
+INSERT INTO THEATER VALUES(
+1,'강남','서울','서울특별시 서초구 서초대로77길 3 아라타워 8층 무비박스 강남지점','1590535728078','02)215-1588');
+INSERT INTO THEATER VALUES(
+2,'강동','서울','서울특별시 강동구 성내로 48 무비박스 강동지점','1590535848167','02)216-1588');	
+INSERT INTO THEATER VALUES(
+3,'동대문','서울','서울특별시  중구 장충단로 247 굿모닝시티9층 무비박스 동대문지점','1590536948810','02)217-1588');	
+INSERT INTO THEATER VALUES(
+4,'홍대','서울','서울특별시  마포구 동교동 양화로 147 , 7-12층 무비박스 홍대지점','1590537311365','02)217-1588');	
+SELECT * FROM THEATER;
+
+-- 상영관정보-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE SCREEN (
+	SCREEN_NO   NUMBER(10)   NOT NULL, -- 상영관번호
+    THEATER_NO  NUMBER(10)   NOT NULL,  -- 극장번호
+	SCREEN_NAME VARCHAR2(20) NOT NULL -- 상영관명
+	
+);
+
+
+ALTER TABLE SCREEN
+	ADD
+		CONSTRAINT PK_SCREEN -- 상영관정보 기본키
+		PRIMARY KEY (
+			SCREEN_NO -- 상영관번호
+		);
+
+INSERT INTO SCREEN VALUES(101,1,'1관');
+INSERT INTO SCREEN VALUES(102,1,'2관');
+INSERT INTO SCREEN VALUES(103,1,'3관');
+
+INSERT INTO SCREEN VALUES(201,2,'1관');
+INSERT INTO SCREEN VALUES(202,2,'2관');
+INSERT INTO SCREEN VALUES(203,2,'3관');
+
+INSERT INTO SCREEN VALUES(301,3,'1관');
+INSERT INTO SCREEN VALUES(302,3,'2관');
+INSERT INTO SCREEN VALUES(303,3,'3관');
+
+INSERT INTO SCREEN VALUES(401,4,'1관');
+INSERT INTO SCREEN VALUES(402,4,'2관');
+INSERT INTO SCREEN VALUES(403,4,'3관');
+
+SELECT * FROM SCREEN;
+-- 상영일정--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE SCHEDULE (
+	SCHEDULE_NO   NUMBER(10) NOT NULL, -- 상영일정 번호
+	SCHEDULE_DATE DATE       NOT NULL, -- 상영일자
+	SCHEDULE_TIME DATE       NOT NULL, -- 상영시간
+	MOVIE_NO      NUMBER(8)  NOT NULL, -- 영화번호
+	SCREEN_NO     NUMBER(10) NOT NULL  -- 상영관번호
+);
+
+
+ALTER TABLE SCHEDULE
+	ADD
+		CONSTRAINT PK_SCHEDULE -- 상영일정 기본키
+		PRIMARY KEY (
+			SCHEDULE_NO -- 상영일정 번호
+		);
+
+--SEQUENCE 
+CREATE SEQUENCE SCHEDULE_SEQ;
+
+--INSERT
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-01','YYYY-MM-DD'),TO_DATE('10:30','HH24:MI'),1,101);
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-01','YYYY-MM-DD'),TO_DATE('14:10','HH24:MI'),1,102);
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-01','YYYY-MM-DD'),TO_DATE('20:00','HH24:MI'),1,102);
+
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-02','YYYY-MM-DD'),TO_DATE('10:30','HH24:MI'),2,101);
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-02','YYYY-MM-DD'),TO_DATE('14:10','HH24:MI'),2,101);
+INSERT INTO SCHEDULE VALUES (
+SCHEDULE_SEQ.NEXTVAL,TO_DATE('2020-06-02','YYYY-MM-DD'),TO_DATE('20:00','HH24:MI'),2,102);
+-- 좌석
+CREATE TABLE SEAT (
+	SEAT_NO     VARCHAR2(20) NOT NULL, -- 좌석번호
+	SCREEN_NO   NUMBER(10)   NOT NULL, -- 상영관번호
+	SEAT_BOOKED VARCHAR2(20) NOT NULL  -- 좌석유무
+);
+
+-- 좌석
+ALTER TABLE SEAT
+	ADD
+		CONSTRAINT PK_SEAT -- 좌석 기본키
+		PRIMARY KEY (
+			SEAT_NO,   -- 좌석번호
+			SCREEN_NO  -- 상영관번호
+		);
+
+
+-- 상영일정
+ALTER TABLE SCHEDULE
+	ADD
+		CONSTRAINT FK_MOVIE_TO_SCHEDULE -- 영화 -> 상영일정
+		FOREIGN KEY (
+			MOVIE_NO -- 영화번호
+		)
+		REFERENCES MOVIE ( -- 영화
+			MOVIE_NO -- 영화번호
+		);
+
+-- 상영일정
+ALTER TABLE SCHEDULE
+	ADD
+		CONSTRAINT FK_SCREEN_TO_SCHEDULE -- 상영관정보 -> 상영일정
+		FOREIGN KEY (
+			SCREEN_NO -- 상영관번호
+		)
+		REFERENCES SCREEN ( -- 상영관정보
+			SCREEN_NO -- 상영관번호
+		);
+
+-- 좌석
+ALTER TABLE SEAT
+	ADD
+		CONSTRAINT FK_SCREEN_TO_SEAT -- 상영관정보 -> 좌석
+		FOREIGN KEY (
+			SCREEN_NO -- 상영관번호
+		)
+		REFERENCES SCREEN ( -- 상영관정보
+			SCREEN_NO -- 상영관번호
+		);
+
+-- 상영관정보
+ALTER TABLE SCREEN
+	ADD
+		CONSTRAINT FK_THEATER_TO_SCREEN -- 극장정보 -> 상영관정보
+		FOREIGN KEY (
+			THEATER_NO -- 극장번호
+		)
+		REFERENCES THEATER ( -- 극장정보
+			THEATER_NO -- 극장번호
+		);
+        
+---------SELECT * FROM TABLE-----------------------------------------------------------------------------
+SELECT * FROM MOVIE;
+SELECT * FROM SCHEDULE;
+SELECT * FROM SCREEN;
+SELECT * FROM SCHEDULE;
+SELECT * FROM MEMBERINFO;
+SELECT * FROM MOVIESC;
+-----------------------------------------------------------------------------------------------------------
+----회원(MEMBERINFO)-----------------------------------------------------------------------------------------
 	
 	1.테이블 생성
 	CREATE TABLE MEMBERINFO(
@@ -191,4 +340,10 @@
 	EMAIL VARCHAR2(30)
 	);
 
+---좌석 테스트 -----------------------------------------------------------------------------------------------------------
 
+	CREATE TABLE MOVIESC(
+	SCREEN VARCHAR2(10),
+	STIME VARCHAR2(10),
+	SEAT VARCHAR2(20) CONSTRAINT MOVIESC_SEAT_NN NOT NULL
+	)

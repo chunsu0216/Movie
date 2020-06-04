@@ -21,8 +21,10 @@
 	%>
 		{
 			"NO":"<%=(slist.get(i)).getMovie_no()%>",
+			"TLOC":"<%=(slist.get(i)).getTheater_loc() %>",
 			"TNAME":"<%=(slist.get(i)).getTheater_name()%>",
 			"DATE":"<%=(slist.get(i)).getSchedule_date()%>",
+			"SCREEN":"<%=(slist.get(i).getScreen_name()) %>",
 			"TIME":"<%=(slist.get(i)).getSchedule_time()%>"
 			
 		<%if(i<slist.size()-1){%>

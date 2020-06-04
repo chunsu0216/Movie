@@ -197,6 +197,13 @@ $(function(){
 </head>
 <body>   
 <%
+/* document.location.href='SeatTest1.jsp?movie='+mtitle+"&theater="+mTheater+'&date='+mDate+"&screen="+mScreen+"&time="+mTime; */
+	String movie=request.getParameter("movie");
+	String theater=request.getParameter("theater");
+	String date=request.getParameter("date");
+	String screen=request.getParameter("screen");
+	String time=request.getParameter("time");
+	
       String seat[]=request.getParameterValues("seat");
       
       if(seat!=null){
@@ -209,6 +216,11 @@ $(function(){
             }
          }
 %>
+<%=movie %>
+<%=theater %>
+<%=date %>
+<%=screen %>
+<%=time %>
       <div> 
          상영관
          <select id="sc"> 

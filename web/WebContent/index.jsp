@@ -1,3 +1,6 @@
+<%@page import="movie.com.model.MovieBean"%>
+<%@page import="movie.com.dao.MovieDao"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 
@@ -56,6 +59,17 @@
       color: #40ba37;
       font-size: 13px;
       margin-right: 30px; }
+    ul{ width: 100%;}  
+     
+    li#boxOffice{
+
+    	float: left; 
+    	overflow: hidden; 
+    	position: relative; 
+    	width: 230px; 
+    	height: 350px; 
+    	margin: 30px;
+    }
     </style>
  <script>
        $(function(){
@@ -71,7 +85,10 @@
     
     </script>
 </head>
-
+<%
+	List<MovieBean> mlist=null;
+	mlist=MovieDao.listMovie();
+%>
 <body>
     <!-- Preloader -->
     <div id="preloader">
@@ -170,8 +187,8 @@
                                     </li>
                                     <li><a href="#">예매</a>
                                       <ul class="dropdown">
-                                            <li><a href="/web/jsp/SeatTest1.jsp">빠른예매</a></li>
-                                            <li><a href="/web/jsp/seatEx2.jsp">상영시간표</a></li>
+                                            <li><a href="/web/jsp/seatEx2.jsp">빠른예매</a></li>
+                                            <li><a href="#">상영시간표</a></li>
                                       </ul>
                                     </li>
                                     <li><a href="#">극장</a>
@@ -226,18 +243,28 @@
          </div>
        </div>
        
+       
         <!--영화 메인 포스터  시작-->
+       
         <p class="">
         <div  style="width:1200px; height: 500px;  margin: 50px; text-align: center;  margin: 0 auto;">
              
            <!--좋아요버튼은 class="like" 예매버튼은 class="booking" -->
              
-             <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;"> 
-                <a href="/web/jsp/MovieInfo.jsp?no=2" ><img alt="" src="/web/img/poster/poster_AvengersEndgame.jpg"></img></a>
-                <input type="button" class="like" value="like1"><input type="button" class="booking" value="booking1">
+             <div  > 
+             	<ul>
+             	 <% for(MovieBean bean:mlist){ %>
+	             	<li id="boxOffice">
+		                <a href="/web/jsp/MovieInfo.jsp?no=<%=bean.getMovie_no()%>" ><img alt="" src="/web/img/poster/<%=bean.getPoster_img()%>" title="<%=bean.getMovie_title()%>"></img></a>
+		                <input type="button" class="like" value="like1"><input type="button" class="booking" value="booking1">
+	           		</li>
+	           		   <%
+       				 }
+      				   %>
+           		</ul> 
              </div> 
            
-            <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;">
+           <!--  <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px;">
                <a href="/web/jsp/MovieInfo.jsp?no=21"><img alt="" src="/web/img/poster/poster_PrisonEscape.jpg" ></img></a>
                <input type="button" class="like" value="like2"><input type="button" class="booking" value="booking2">
             </div>
@@ -250,8 +277,9 @@
             <div style="overflow: hidden; position: relative; float: left; width: 230px; height: 350px; margin: 30px; ">
                <a href="/web/jsp/MovieInfo.jsp?no=42"><img alt="" src="/web/img/poster/poster_TrollsWorldTour.jpg" ></img></a>
                <input type="button" class="like" value="like4"><input type="button" class="booking" value="booking4">
-            </div>
+            </div> -->
          </div>
+      
 <!--         <div  style="text-align: center; width:1200px; height: 500px; border: 1px solid; margin: 50px; position: absolute; left: 50%; margin-left: -50%">
              
            좋아요버튼은 class="like" 예매버튼은 class="booking"
